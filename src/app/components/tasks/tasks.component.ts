@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../../store/app.state';
 import { mockTasks } from 'src/app/mock-tasks';
 import { Task } from '../../Task';
 import { TaskService } from 'src/app/services/task.service';
+import { loadTasks, createTask, deleteTask, updateTask } from 'src/store/task.actions';
+import { selectTasks } from 'src/store/task.selectors';
 
 @Component({
   selector: 'app-tasks',
@@ -9,32 +13,28 @@ import { TaskService } from 'src/app/services/task.service';
   styleUrls: ['./tasks.component.css']
 })
 export class TasksComponent implements OnInit {
-  tasks: Task[] = [];
+  tasks$ = this.store.select(selectTasks);
 
-  constructor(private taskService: TaskService) { }
+  constructor(
+    private taskService: TaskService,
+     private store: Store<AppState>
+     ) { }
 
   ngOnInit(): void {
-    this.taskService.getTasks().subscribe((tasks) => {
-      this.tasks = tasks
-    });
+    this.store.dispatch(loadTasks())
   }
 
   addTask(task: Task) {
-    this.taskService.addTask(task)
-      .subscribe((newTask) => {
-        this.tasks.push(newTask);
-      });
+    this.store.dispatch(createTask({task}))
   }
 
   deleteTask(task: Task) {
-    this.taskService.deleteTask(task)
-      .subscribe(() => (this.tasks = this.tasks.filter(t => t.id !== task.id)))
+    this.store.dispatch(deleteTask({task}))
   }
 
   toggleTaskReminder(task: Task) {
     task.reminder = !task.reminder;
-    this.taskService.updateTask(task)
-      .subscribe(() => { console.log('task updated'); })
+    this.store.dispatch(updateTask({task}))
   }
 
 }

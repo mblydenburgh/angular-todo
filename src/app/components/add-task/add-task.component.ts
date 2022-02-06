@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Task } from '../../Task';
 import { UiService } from 'src/app/services/ui.service';
 import {Subscription} from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-add-task',
@@ -33,7 +34,7 @@ export class AddTaskComponent implements OnInit {
       alert('Please enter text and day');
       return;
     }
-    const newTask: Task = { text: this.text, day: this.day, reminder: this.reminder };
+    const newTask: Task = { id: uuidv4(), text: this.text, day: this.day, reminder: this.reminder };
     this.onAddTask.emit(newTask);
 
     this.text = "";

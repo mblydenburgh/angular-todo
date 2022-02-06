@@ -13,6 +13,10 @@ import { TaskItemComponent } from './components/task-item/task-item.component';
 import { AddTaskComponent } from './components/add-task/add-task.component';
 import { AboutComponent } from './components/about/about.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import {TaskEffects} from '../store/task.effects';
+import { tasksReducer } from '../store/task.reducer';
 
 const routes: Routes = [
   { path: '', component: TasksComponent },
@@ -35,7 +39,11 @@ const routes: Routes = [
     FontAwesomeModule,
     FormsModule, 
     HttpClientModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    StoreModule.forRoot({
+      task: tasksReducer
+    }, {}),
+    EffectsModule.forRoot([TaskEffects])
   ],
   providers: [],
   bootstrap: [AppComponent]
