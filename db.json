@@ -11,12 +11,6 @@
       "text": "Task 2",
       "day": "Tuesday",
       "reminder": false
-    },
-    {
-      "id": 3,
-      "text": "Task 3",
-      "day": "Wednesday",
-      "reminder": true
     }
   ]
 }
