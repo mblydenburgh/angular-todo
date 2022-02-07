@@ -19,8 +19,19 @@ export const tasksReducer = createReducer(
     on(loadTasksSuccess, (state, {tasks}) => tasks.reduce((acc, task) => ({
         ...acc, 
         [task.id]: task
+    }), {})),
+    on(createTaskSuccess, (state, {task}) => createTask(Object.values(state), task).reduce((acc, task) => ({
+        ...acc,
+        [task.id]: task
+    }), {})),
+    on(deleteTaskSuccess, (state, {id}) => deleteTask(Object.values(state), id).reduce((acc, task) => ({
+        ...acc,
+        [task.id]: task
+    }), {})),
+    on(updateTaskSuccess, (state, {task}) => updateTask(Object.values(state), task).reduce((acc, task) => ({
+        ...acc,
+        [task.id]: task
     }), {}))
-    // on(createTaskSuccess, (state, {task}) => createTask(state, task))
 )
 
 const createTask = (tasks: Task[], task: Task) => [...tasks, task];
